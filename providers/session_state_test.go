@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bitly/oauth2_proxy/cookie"
 	"github.com/bmizerany/assert"
+	"github.com/vistarmedia/oauth2_proxy/cookie"
 )
 
 const secret = "0123456789abcdefghijklmnopqrstuv"
