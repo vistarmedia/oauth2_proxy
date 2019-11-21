@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/18F/hmacauth"
+	"github.com/gorilla/mux"
 	"github.com/vistarmedia/oauth2_proxy/cookie"
 	"github.com/vistarmedia/oauth2_proxy/providers"
 )
@@ -116,7 +117,7 @@ func NewFileServer(path string, filesystemPath string) (proxy http.Handler) {
 }
 
 func NewOAuthProxy(opts *Options, validator func(string) bool) *OAuthProxy {
-	serveMux := http.NewServeMux()
+	serveMux := mux.NewRouter().SkipClean(true)
 	var auth hmacauth.HmacAuth
 	if sigData := opts.signatureData; sigData != nil {
 		auth = hmacauth.NewHmacAuth(sigData.hash, []byte(sigData.key),
@@ -134,15 +135,14 @@ func NewOAuthProxy(opts *Options, validator func(string) bool) *OAuthProxy {
 			} else {
 				setProxyDirector(proxy)
 			}
-			serveMux.Handle(path,
-				&UpstreamProxy{u.Host, proxy, auth})
+			serveMux.PathPrefix(path).Handler(&UpstreamProxy{u.Host, proxy, auth})
 		case "file":
 			if u.Fragment != "" {
 				path = u.Fragment
 			}
 			log.Printf("mapping path %q => file system %q", path, u.Path)
 			proxy := NewFileServer(path, u.Path)
-			serveMux.Handle(path, &UpstreamProxy{path, proxy, nil})
+			serveMux.PathPrefix(path).Handler(&UpstreamProxy{path, proxy, nil})
 		default:
 			panic(fmt.Sprintf("unknown upstream protocol %s", u.Scheme))
 		}
