@@ -5,9 +5,11 @@ set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "working dir $DIR"
 mkdir -p $DIR/dist
-mkdir -p $DIR/.godeps
-export GOPATH=$DIR/.godeps:$GOPATH
-GOPATH=$DIR/.godeps gpm install
+# Skip the dep setup since we've migrated to go modules. Assume deps
+# are all set before this script is run.
+# mkdir -p $DIR/.godeps
+# export GOPATH=$DIR/.godeps:$GOPATH
+# GOPATH=$DIR/.godeps gpm install
 
 os=$(go env GOOS)
 arch=$(go env GOARCH)
