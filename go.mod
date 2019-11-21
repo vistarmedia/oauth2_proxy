@@ -9,6 +9,7 @@ require (
 	github.com/bitly/go-simplejson v0.5.1-0.20170206154632-da1a8928f709
 	github.com/bmizerany/assert v0.0.0-20120716205630-e17e99893cb6
 	github.com/golang/protobuf v1.3.2 // indirect
+	github.com/gorilla/mux v1.7.3
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/mreiferson/go-options v0.0.0-20161229190002-77551d20752b
 	golang.org/x/net v0.0.0-20190311183353-d8887717615a // indirect
